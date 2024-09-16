@@ -1,0 +1,8 @@
+@use "./variables"
+
+
+@function get-font-size($type, $size) 
+    @if $type == header
+        @return map.get(variables.$header-font-sizes, $size)
+    @else if $type == body
+        @return map.get(variables.$body-font-sizes, $size)
