@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { boardAdapter, BoardState } from '../board.state';
+import { selectRouteParams } from '../../router.selectors';
 
 export const selectBoardState = createFeatureSelector<BoardState>('boards');
 
@@ -18,4 +19,21 @@ export const selectBoardLoading = createSelector(
 export const selectBoardError = createSelector(
   selectBoardState,
   (state) => state.error
+);
+
+export const selectBoardById = (id: string) =>
+  createSelector(selectBoardEntities, (entities) => entities[id]);
+
+export const selectBoard = createSelector(
+  selectBoardEntities,
+  selectRouteParams,
+  (boards, params) => {
+    const id = params['id'];
+    return id ? boards[id] : null;
+  }
+);
+
+export const selectFirstBoardId = createSelector(
+  selectBoardIds,
+  (ids) => ids[0] || null
 );
