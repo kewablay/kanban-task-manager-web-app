@@ -1,1 +1,4 @@
 <app-sidebar />
+@if(board$ | async; as board) {
+<app-board-content [board]="board" />
+}

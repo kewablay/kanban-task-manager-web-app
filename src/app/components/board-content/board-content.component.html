@@ -1,1 +1,15 @@
-<p>board-content works!</p>
+<main>
+  <h1>{{ board.name }}</h1>
+
+  @for(column of board.columns; track column) {
+  <section>
+    <h2>{{ column.name }}</h2>
+    @for(task of column.tasks; track task) {
+    <article>
+      <p>{{ task.title }}</p>
+      <!-- <p>{{ task.description }}</p> -->
+    </article>
+    }
+  </section>
+  }
+</main>
