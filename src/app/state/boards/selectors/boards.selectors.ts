@@ -24,7 +24,7 @@ export const selectBoardError = createSelector(
 export const selectBoardById = (id: string) =>
   createSelector(selectBoardEntities, (entities) => entities[id]);
 
-export const selectBoard = createSelector(
+export const selectBoardWithParamId = createSelector(
   selectBoardEntities,
   selectRouteParams,
   (boards, params) => {
