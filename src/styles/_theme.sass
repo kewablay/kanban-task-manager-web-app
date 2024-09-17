@@ -5,9 +5,9 @@ $dark-mode: (background: $clr-very-dark-grey, primary: $clr-purple, primary-hove
 
 
 :root 
-  @each $key, $value in $dark-mode 
+  @each $key, $value in $light-mode 
     --#{$key}: #{$value}
   
-[data-theme="light"]
-  @each $key, $value in $light-mode
+[data-theme="dark"]
+  @each $key, $value in $dark-mode
     --#{$key}: #{$value}
