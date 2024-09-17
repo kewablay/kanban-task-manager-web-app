@@ -5,11 +5,12 @@ import { Board } from '../../models/app.model';
 import { selectBoards } from '../../state/boards/selectors/boards.selectors';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { toggleTheme } from '../../state/theme/actions/theme.actions';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [ AsyncPipe, RouterLink, RouterLinkActive],
+  imports: [AsyncPipe, RouterLink, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.sass',
 })
@@ -19,4 +20,7 @@ export class SidebarComponent {
     this.boards$ = this.store.select(selectBoards);
   }
 
+  toggleTheme() {
+    this.store.dispatch(toggleTheme());
+  }
 }

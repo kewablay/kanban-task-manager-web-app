@@ -19,6 +19,7 @@ export class themeEffect {
           const currrentTheme = this.localStorageService.getItem('theme');
           const newTheme = currrentTheme === 'light' ? 'dark' : 'light';
           this.localStorageService.setItem('theme', newTheme);
+          document.documentElement.setAttribute('data-theme', newTheme);
         })
       ),
     { dispatch: false }
@@ -32,9 +33,12 @@ export class themeEffect {
         if (currrentTheme === null) {
           this.localStorageService.setItem('theme', 'light');
           const theme = 'light';
+          document.documentElement.setAttribute('data-theme', theme);
+
           return setTheme({ theme });
         } else {
           const theme = currrentTheme;
+          document.documentElement.setAttribute('data-theme', theme);
           return setTheme({ theme });
         }
       })
