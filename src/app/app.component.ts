@@ -6,6 +6,7 @@ import { loadBoards } from './state/boards/actions/board.actions';
 import { Observable } from 'rxjs';
 import { Board } from './models/app.model';
 import { selectBoards } from './state/boards/selectors/boards.selectors';
+import { loadTheme } from './state/theme/actions/theme.actions';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.store.dispatch(loadBoards());
+    this.store.dispatch(loadTheme());
   }
 
   ngAfterViewInit() {
