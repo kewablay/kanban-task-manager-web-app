@@ -4,11 +4,12 @@ import { selectBoardWithParamId } from '../../state/boards/selectors/boards.sele
 import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { BoardContentComponent } from '../../components/board-content/board-content.component';
 import { AsyncPipe } from '@angular/common';
+import { BoardFormComponent } from "../../shared/board-form/board-form.component";
 
 @Component({
   selector: 'app-board-detail',
   standalone: true,
-  imports: [SidebarComponent, BoardContentComponent, AsyncPipe],
+  imports: [SidebarComponent, BoardContentComponent, AsyncPipe, BoardFormComponent],
   templateUrl: './board-detail.component.html',
   styleUrl: './board-detail.component.sass',
 })
