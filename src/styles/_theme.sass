@@ -1,13 +1,13 @@
-// @use './variables'
+@use './_variables' as *
 
-// $dark-mode: (background: Variables.$bg-dark, primary: Variables.$clr-primary, bg-accent: Variables.$bg-dark-accent, clr-warning: Variables.$clr-red, text: Variables.$clr-white, text-secondary: Variables.$clr-gray)
-// $light-mode: (background: Variables.$bg-light, primary: Variables.$clr-primary, bg-accent: Variables.$bg-light-accent, clr-warning: Variables.$clr-red, text: Variables.$clr-black, text-secondary: Variables.$clr-gray-500)
+$light-mode: (background: $clr-light-grey, primary: $clr-purple, primary-hover: $clr-purple-hover, bg-accent: $clr-white, clr-warning: $clr-red, clr-warning-hover: $clr-red-hover, text: $clr-black, text-secondary: $clr-medium-grey)
+$dark-mode: (background: $clr-very-dark-grey, primary: $clr-purple, primary-hover: $clr-purple-hover, bg-accent: $clr-dark-grey, clr-warning: $clr-red, clr-warning-hover: $clr-red-hover, text: $clr-white, text-secondary: $clr-medium-grey)
 
 
-// :root 
-//   @each $key, $value in $dark-mode 
-//     --#{$key}: #{$value}
+:root 
+  @each $key, $value in $dark-mode 
+    --#{$key}: #{$value}
   
-// [data-theme="light"]
-//   @each $key, $value in $light-mode
-//     --#{$key}: #{$value}
+[data-theme="light"]
+  @each $key, $value in $light-mode
+    --#{$key}: #{$value}
