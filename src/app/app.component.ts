@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { DataServiceService } from './services/data-service/data-service.service';
+import { DataService } from './services/data-service/data.service';
+import { Store } from '@ngrx/store';
+import { loadBoards } from './state/boards/actions/board.actions';
+import { Observable } from 'rxjs';
+import { Board } from './models/app.model';
+import { selectBoards } from './state/boards/selectors/boards.selectors';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +15,18 @@ import { DataServiceService } from './services/data-service/data-service.service
   styleUrl: './app.component.sass',
 })
 export class AppComponent {
-  constructor(private dataService: DataServiceService) {
-    this.dataService.fetchData().subscribe((data) => console.log('data:', data));
+  boards$: Observable<Board[]>;
+  constructor(private store: Store) {
+    this.boards$ = this.store.select(selectBoards);
+  }
+
+  ngOnInit() {
+    this.store.dispatch(loadBoards());
+  }
+
+  ngAfterViewInit() {
+    this.boards$.subscribe((boards) =>
+      console.log('boards from store', boards)
+    );
   }
 }
