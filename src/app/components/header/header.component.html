@@ -1,10 +1,14 @@
 <header>
   <h1>{{ board.name }}</h1>
-  <button>Create Task</button>
+  <button (click)="openTaskModal()">Create Task</button>
   <button (click)="openEditBoardModal()">Edit Board</button>
   <button (click)="deleteBoard(board.id)">Delete Boards</button>
 </header>
 
 <div [style]="{ display: isEditBoardModalOpen ? 'block' : 'none' }">
   <app-board-form [board]="board" />
+</div>
+
+<div [style]="{ display: isTaskModalOpen ? 'block' : 'none' }">
+  <app-task-form />
 </div>
