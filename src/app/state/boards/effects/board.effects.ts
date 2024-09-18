@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { LocalStorageService } from '../../../services/localStorageService/local-storage.service';
 import { DataService } from '../../../services/data-service/data.service';
-import { loadBoards, loadBoardsSuccess, test } from '../actions/board.actions';
+import { loadBoards, loadBoardsSuccess } from '../actions/board.actions';
 import { map, mergeMap, of, switchMap, tap } from 'rxjs';
 
 @Injectable()

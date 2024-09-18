@@ -7,6 +7,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Board } from '../../models/app.model';
+import { selectBoardWithParamId } from '../../state/boards/selectors/boards.selectors';
+import { addTask } from '../../state/boards/actions/board.actions';
 
 @Component({
   selector: 'app-task-form',
@@ -17,17 +21,29 @@ import { Store } from '@ngrx/store';
 })
 export class TaskFormComponent {
   taskForm: FormGroup;
-  statuses = ['Todo', 'Doing', 'Done'];
+  // statuses = ['Todo', 'Doing', 'Done'];
+  board$: Observable<Board | null | undefined>;
+  boardId!: number;
+  statuses: string[] = [];
 
   constructor(private fb: FormBuilder, private store: Store) {
     this.taskForm = fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      subtasks: this.fb.array([
-        this.fb.control(''),
-        this.fb.control(''),
-      ]),
+      subtasks: this.fb.array([this.fb.control(''), this.fb.control('')]),
       status: ['', Validators.required],
+    });
+
+    this.board$ = this.store.select(selectBoardWithParamId);
+  }
+
+  ngOnInit() {
+    this.board$.subscribe((board) => {
+      if (board) {
+        this.statuses = []
+        this.boardId = board.id;
+        this.statuses = board.columns.map((column) => column.name);
+      }
     });
   }
 
@@ -59,5 +75,14 @@ export class TaskFormComponent {
 
   onSubmit() {
     console.log('task value: ', this.taskForm.value);
+    const newTaskData = {
+      boardId: this.boardId,
+      columnName: this.taskForm.value.status,
+      task: this.taskForm.value,
+    };
+
+    console.log('task new value: ', newTaskData);
+
+    this.store.dispatch(addTask({ ...newTaskData }));
   }
 }

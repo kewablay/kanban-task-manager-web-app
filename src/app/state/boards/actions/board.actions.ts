@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Board } from '../../../models/app.model';
+import { Task } from 'zone.js/lib/zone-impl';
 
 // CREATE
 export const addBoard = createAction(
@@ -30,4 +31,22 @@ export const deleteBoard = createAction(
   props<{ boardId: number }>()
 );
 
-export const test = createAction('[Board] Test');
+// ACTIONS FOR TASKS
+
+// CREATE
+export const addTask = createAction(
+  '[Task] Add task',
+  props<{ boardId: number; columnName: string; task: Task }>()
+);
+
+// UPDATE
+export const updateTask = createAction(
+  '[Task] Update task',
+  props<{ boardId: number; columnName: string; task: Task }>()
+);
+
+// DELETE
+export const deleteTask = createAction(
+  '[Task] Delete task',
+  props<{ boardId: number; columnName: string; taskId: number }>()
+);
