@@ -26,20 +26,25 @@ export class BoardFormComponent {
   nextBoardId!: number;
   @Input() board!: Board;
   constructor(private fb: FormBuilder, private store: Store) {
-    this.boardForm = this.fb.group({});
+    this.boardForm = this.fb.group({
+      name: ['', Validators.required],
+      columns: this.fb.array([]),
+    });
     this.store
       .select(selectNextBoardId)
       .subscribe((id) => (this.nextBoardId = id));
   }
 
-  ngOnChanges() {
-    this.boardForm = this.fb.group({
-      name: [this.board.name || "", Validators.required],
-      columns: this.fb.array([
-        this.fb.control('Todo'),
-        this.fb.control('Doing'),
-      ]),
-    });
+  ngOnChanges(simpleChanges: any) {
+    if (simpleChanges.board) {
+      this.boardForm = this.fb.group({
+        name: [this.board.name || '', Validators.required],
+        columns: this.fb.array([
+          this.fb.control('Todo'),
+          this.fb.control('Doing'),
+        ]),
+      });
+    }
   }
 
   get columns() {
