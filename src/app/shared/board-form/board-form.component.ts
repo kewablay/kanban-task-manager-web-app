@@ -7,7 +7,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { addBoard } from '../../state/boards/actions/board.actions';
+import {
+  addBoard,
+  updateBoard,
+} from '../../state/boards/actions/board.actions';
 import { selectNextBoardId } from '../../state/boards/selectors/boards.selectors';
 import { Board } from '../../models/app.model';
 
@@ -29,9 +32,9 @@ export class BoardFormComponent {
       .subscribe((id) => (this.nextBoardId = id));
   }
 
-  ngOnInit() {
+  ngOnChanges() {
     this.boardForm = this.fb.group({
-      name: ['', Validators.required],
+      name: [this.board.name || "", Validators.required],
       columns: this.fb.array([
         this.fb.control('Todo'),
         this.fb.control('Doing'),
@@ -51,13 +54,7 @@ export class BoardFormComponent {
     this.columns.removeAt(index);
   }
 
-
-
   // FORM SUBMISSION
-  createNewBoard() {
-    
-  }
-
   onSubmit() {
     if (this.boardForm.valid) {
       console.log(this.boardForm.value);
@@ -73,7 +70,13 @@ export class BoardFormComponent {
         columns: newColumns,
       };
       // console.log('new Board ', newBoard);
-      this.store.dispatch(addBoard({ board: newBoard }));
+
+      if (this.board) {
+        newBoard.id = this.board.id;
+        this.store.dispatch(updateBoard({ board: newBoard }));
+      } else {
+        this.store.dispatch(addBoard({ board: newBoard }));
+      }
     }
   }
 }

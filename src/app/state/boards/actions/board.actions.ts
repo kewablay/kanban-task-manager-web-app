@@ -21,13 +21,13 @@ export const loadBoardsError = createAction(
 // UPDATE
 export const updateBoard = createAction(
   '[Board] Update Board',
-  props<{ board: Partial<Board> & { id: string } }>()
+  props<{ board: Partial<Board> & { id: number } }>()
 );
 
 // DELETE
 export const deleteBoard = createAction(
   '[Board] Delete Board',
-  props<{ boardId: string }>()
+  props<{ boardId: number }>()
 );
 
 export const test = createAction('[Board] Test');
