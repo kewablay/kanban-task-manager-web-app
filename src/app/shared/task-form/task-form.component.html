@@ -1,1 +1,54 @@
-<p>task-form works!</p>
+<form [formGroup]="taskForm" (submit)="onSubmit()">
+  <h2>Task Form</h2>
+  <div>
+    <input formControlName="title" type="text" name="title" />
+  </div>
+  <div>
+    <textarea
+      formControlName="description"
+      name="description"
+      rows="3"
+      l="30"
+    ></textarea>
+  </div>
+
+  <!-- Sub tasks  -->
+  <div formArrayName="subtasks">
+    @for(subtask of subtasks.controls; track $index) {
+    <div>
+      @if($index == 0) {
+      <input
+        id="columnns-{{ $index }}"
+        type="text"
+        formControlName="{{ $index }}"
+        placeholder="eg. Make coffee"
+      />
+
+      } @else if ($index == 1) {
+      <input
+        id="columnns-{{ $index }}"
+        type="text"
+        formControlName="{{ $index }}"
+        placeholder="eg. Drink some cofee"
+      />
+      } @else {
+      <input
+        id="columnns-{{ $index }}"
+        type="text"
+        formControlName="{{ $index }}"
+      />
+      }
+      <button type="button" (click)="removeSubtask($index)">-</button>
+    </div>
+    }
+  </div>
+  <button type="button" (click)="addSubTask()">+ Add another column</button>
+
+  <select formControlName="status" name="status">
+    @for(status of statuses; track status) {
+    <option value="{{ status }}">{{ status }}</option>
+    }
+  </select>
+
+  <button type="submit">Create Task</button>
+</form>
