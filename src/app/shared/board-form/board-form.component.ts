@@ -35,14 +35,19 @@ export class BoardFormComponent {
       .subscribe((id) => (this.nextBoardId = id));
   }
 
+  initializeColumns() {
+    const columns = this.board?.columns || [];
+    const columnFormControls = columns.map((column) =>
+      this.fb.control(column.name, Validators.required)
+    );
+    return columnFormControls;
+  }
+
   ngOnChanges(simpleChanges: any) {
     if (simpleChanges.board) {
       this.boardForm = this.fb.group({
-        name: [this.board.name || '', Validators.required],
-        columns: this.fb.array([
-          this.fb.control('Todo'),
-          this.fb.control('Doing'),
-        ]),
+        name: [this.board?.name || '', Validators.required],
+        columns: this.fb.array(this.initializeColumns()),
       });
     }
   }
