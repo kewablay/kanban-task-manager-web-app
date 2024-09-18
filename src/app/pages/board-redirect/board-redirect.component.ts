@@ -15,10 +15,10 @@ export class BoardRedirectComponent {
   constructor(private store: Store<AppState>, private router: Router) {}
 
   ngOnInit() {
-    this.store
-      .select(selectFirstBoardId)
-      .subscribe((id) => {
+    this.store.select(selectFirstBoardId).subscribe((id) => {
+      if (id) {
         this.router.navigate(['/board', id]);
-      });
+      }
+    });
   }
 }
