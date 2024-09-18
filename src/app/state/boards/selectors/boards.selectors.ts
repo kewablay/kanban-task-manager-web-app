@@ -37,3 +37,7 @@ export const selectFirstBoardId = createSelector(
   selectBoardIds,
   (ids) => ids[0] || null
 );
+
+export const selectNextBoardId = createSelector(selectBoardIds, (ids) =>
+  ids.length > 0 ? Math.max(...(ids as number[])) + 1 : -1
+);
