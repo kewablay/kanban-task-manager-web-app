@@ -7,6 +7,10 @@
     }}</a>
   </div>
   }
-  <button>Create New Board</button>
+  <button (click)="openAddBoardModal()">Create New Board</button>
   <button (click)="toggleTheme()">toggleTheme</button>
 </section>
+
+<div [style]="{ display: isAddBoardModalOpen ? 'block' : 'none' }">
+  <app-board-form />
+</div>

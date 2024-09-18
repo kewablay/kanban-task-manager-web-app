@@ -7,11 +7,12 @@ import { Observable } from 'rxjs';
 import { Board } from './models/app.model';
 import { selectBoards } from './state/boards/selectors/boards.selectors';
 import { loadTheme } from './state/theme/actions/theme.actions';
+import { SidebarComponent } from "./components/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SidebarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.sass',
 })
