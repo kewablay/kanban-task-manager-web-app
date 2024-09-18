@@ -1,7 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Board } from '../../../models/app.model';
-import { Task } from 'zone.js/lib/zone-impl';
-
+import { Task } from '../../../models/app.model';
 // CREATE
 export const addBoard = createAction(
   '[Board] Add Board',

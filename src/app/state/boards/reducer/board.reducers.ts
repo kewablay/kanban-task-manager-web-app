@@ -69,34 +69,34 @@ export const boardReducer = createReducer(
     );
   }),
   //   UPDATE
-  // on(updateTask, (state, { boardId, columnName, task }) => {
-  //   const board = state.entities[boardId];
+  on(updateTask, (state, { boardId, columnName, task }) => {
+    const board = state.entities[boardId];
     
-  //   if (!board) return state;
+    if (!board) return state;
 
-  //   const updatedColumns = board.columns.map(column => {
-  //     if (column.name === columnName) {
-  //       const updatedTasks = column.tasks.map(t => 
-  //         t.id === task.id ? { ...t, ...task } : t
-  //       );
-  //       return {
-  //         ...column,
-  //         tasks: updatedTasks
-  //       };
-  //     }
-  //     return column;
-  //   });
+    const updatedColumns = board.columns.map(column => {
+      if (column.name === columnName) {
+        const updatedTasks = column.tasks.map(t => 
+          t.id === task.id ? { ...t, ...task } : t
+        );
+        return {
+          ...column,
+          tasks: updatedTasks
+        };
+      }
+      return column;
+    });
 
-  //   const updatedBoard = {
-  //     ...board,
-  //     columns: updatedColumns
-  //   };
+    const updatedBoard = {
+      ...board,
+      columns: updatedColumns
+    };
 
-  //   return boardAdapter.updateOne(
-  //     { id: boardId, changes: updatedBoard },
-  //     state
-  //   );
-  // }),
+    return boardAdapter.updateOne(
+      { id: boardId, changes: updatedBoard },
+      state
+    );
+  }),
 
   //   DELETE
   on(deleteTask, (state, { boardId, columnName, taskId }) => {
