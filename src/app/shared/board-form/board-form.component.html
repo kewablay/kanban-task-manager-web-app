@@ -1,19 +1,22 @@
-<form [formGroup]="boardForm">
-  <h2>Board Form</h2>
+<form [formGroup]="boardForm" (submit)="onSubmit()">
+  <h2>{{board ? "Edit Board" : "Add New Board"}}</h2>
   <label for="name">Name: </label>
-  <input type="text" name="name" formControlName="name" placeholder="eg. Web design"/>
+  <input
+    type="text"
+    name="name"
+    formControlName="name"
+    placeholder="eg. Web design"
+  />
 
   <div formArrayName="columns">
     @for(column of columns.controls; track $index) {
     <div>
-      <input
-        id="columnns-{{ $index }}"
-        type="text"
-        formControlName="$index"
-      />
+      <input id="columnns-{{ $index }}" type="text" formControlName="{{$index}}" />
       <button type="button" (click)="removeColumn($index)">-</button>
     </div>
     }
   </div>
   <button type="button" (click)="addColumn()">+ Add another column</button>
+
+  <button type="submit">Create new board</button>
 </form>

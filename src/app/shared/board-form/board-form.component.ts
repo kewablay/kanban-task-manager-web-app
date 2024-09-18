@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -6,6 +6,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { addBoard } from '../../state/boards/actions/board.actions';
+import { selectNextBoardId } from '../../state/boards/selectors/boards.selectors';
+import { Board } from '../../models/app.model';
 
 @Component({
   selector: 'app-board-form',
@@ -16,14 +20,22 @@ import {
 })
 export class BoardFormComponent {
   boardForm: FormGroup;
-  constructor(private fb: FormBuilder) {
+  nextBoardId!: number;
+  @Input() board!: Board;
+  constructor(private fb: FormBuilder, private store: Store) {
     this.boardForm = this.fb.group({});
+    this.store
+      .select(selectNextBoardId)
+      .subscribe((id) => (this.nextBoardId = id));
   }
 
   ngOnInit() {
     this.boardForm = this.fb.group({
       name: ['', Validators.required],
-      columns: this.fb.array([this.fb.control('')]),
+      columns: this.fb.array([
+        this.fb.control('Todo'),
+        this.fb.control('Doing'),
+      ]),
     });
   }
 
@@ -37,5 +49,31 @@ export class BoardFormComponent {
 
   removeColumn(index: number) {
     this.columns.removeAt(index);
+  }
+
+
+
+  // FORM SUBMISSION
+  createNewBoard() {
+    
+  }
+
+  onSubmit() {
+    if (this.boardForm.valid) {
+      console.log(this.boardForm.value);
+      console.log(this.columns.value);
+
+      const newColumns = this.columns.value.map((column: string) => {
+        return { name: column, tasks: [] };
+      });
+      // console.log(newColumns)
+      const newBoard = {
+        id: this.nextBoardId,
+        name: this.boardForm.value.name,
+        columns: newColumns,
+      };
+      // console.log('new Board ', newBoard);
+      this.store.dispatch(addBoard({ board: newBoard }));
+    }
   }
 }
