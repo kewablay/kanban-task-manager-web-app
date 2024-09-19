@@ -6,13 +6,20 @@
   <ul>
     @for(subtask of task.subtasks; track $index) {
     <li>
-      <input [checked]="subtask.isCompleted" type="checkbox" />
-      {{ subtask.title }}
+      <label>
+        <input
+          [value]="subtask.title"
+          (change)="updateSubtask($event)"
+          [checked]="subtask.isCompleted"
+          type="checkbox"
+        />
+        {{ subtask.title }}
+      </label>
     </li>
     }
   </ul>
 
-  <select (change)="updateTaskStatus($event)" name="statuses">
+  <select (change)="updateStatus($event)" name="statuses">
     @for(status of statuses; track status) {
     <option [selected]="task.status === status" value="{{ status }}">
       {{ status }}

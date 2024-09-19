@@ -39,7 +39,7 @@ export const addTask = createAction(
 );
 
 // UPDATE
-export const updateTask = createAction(
+export const updateTaskStatus = createAction(
   '[Task] Update task',
   props<{ boardId: number; columnName: string; task: Task }>()
 );
@@ -48,4 +48,10 @@ export const updateTask = createAction(
 export const deleteTask = createAction(
   '[Task] Delete task',
   props<{ boardId: number; columnName: string; taskId: number }>()
+);
+
+// ACTIONS FOR SUBTASKS
+export const updateSubTask = createAction(
+  '[Subtask] Update subtask',
+  props<{ boardId: number; columnName: string; task: Task }>()
 );

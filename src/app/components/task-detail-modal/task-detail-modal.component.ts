@@ -1,12 +1,12 @@
 import { Component, Input, input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { selectBoardWithParamId } from '../../state/boards/selectors/boards.selectors';
+import { Board, Subtask, Task } from '../../models/app.model';
 import {
-  selectBoardWithParamId,
-  selectTask,
-} from '../../state/boards/selectors/boards.selectors';
-import { Board, Task } from '../../models/app.model';
-import { updateTask } from '../../state/boards/actions/board.actions';
+  updateSubTask,
+  updateTaskStatus,
+} from '../../state/boards/actions/board.actions';
 
 @Component({
   selector: 'app-task-detail-modal',
@@ -22,7 +22,7 @@ export class TaskDetailModalComponent {
   boardId: number = 0;
   constructor(private store: Store) {
     // this.task$ = this.store.select(selectTask());
-    console.log('task from task detail modal', this.task);
+    // console.log('task from task detail modal', this.task);
     this.board$ = this.store.select(selectBoardWithParamId);
   }
 
@@ -34,45 +34,42 @@ export class TaskDetailModalComponent {
         this.statuses = board.columns.map((column) => column.name);
       }
     });
-
-    console.log("TAsk ", this.task)
   }
 
-  updateTask(index: number) {
-    // this.task.subtasks[index].isCompleted = !this.task.subtasks[index].isCompleted;
-    // const updatedTask = { ...this.task, subtasks: this.task.subtasks[index].isCompleted ? this.task.subtasks.map((subtask) => ({ ...subtask, isCompleted: false })) : this.task.subtasks.map((subtask) => ({ ...subtask, isCompleted: true }))};
-    // console.log("update task : ", updateTask)
+  updateSubtask(event: any) {
+    const isCompleted = event.target.checked;
+    const subtaskTitle = event.target.value;
+    
+
+    const updatedSubtask = this.task.subtasks.map((subtask: Subtask) => {
+      if (subtask.title === subtaskTitle) {
+        return {
+          ...subtask,
+          isCompleted: isCompleted,
+        };
+      }
+      return subtask;
+    });
+
+
     this.store.dispatch(
-      updateTask({
+      updateSubTask({
         boardId: this.boardId,
         columnName: this.task.status,
-        task: this.task,
+        task: {
+          ...this.task,
+          subtasks: updatedSubtask,
+        },
       })
     );
-
   }
 
-  // updateTaskStatus(event: any) {
-  //   console.log(event.target.value);
-
-  //   this.store.dispatch(
-  //     updateTask({
-  //       boardId: this.boardId,
-  //       columnName: event.target.value,
-  //       task: {
-  //         ...this.task,
-  //         status: event.target.value,
-  //       },
-  //     })
-  //   );
-  // }
-
-  updateTaskStatus(event: any) {
+  updateStatus(event: any) {
     const newStatus = event.target.value;
     // console.log("column name: ", )
 
     this.store.dispatch(
-      updateTask({
+      updateTaskStatus({
         boardId: this.boardId,
         columnName: this.task.status, // Old status (current column)
         task: {
