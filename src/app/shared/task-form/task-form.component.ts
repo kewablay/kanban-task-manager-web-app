@@ -40,7 +40,7 @@ export class TaskFormComponent {
   ngOnInit() {
     this.board$.subscribe((board) => {
       if (board) {
-        this.statuses = []
+        this.statuses = [];
         this.boardId = board.id;
         this.statuses = board.columns.map((column) => column.name);
       }
@@ -75,10 +75,19 @@ export class TaskFormComponent {
 
   onSubmit() {
     console.log('task value: ', this.taskForm.value);
+    const newSubTasks = this.taskForm.value.subtasks.map((subtask: string) => {
+      return { title: subtask, isCompleted: false };
+    });
+
+    console.log('new subtask : ', this.taskForm.value.subtasks);
+
     const newTaskData = {
       boardId: this.boardId,
       columnName: this.taskForm.value.status,
-      task: this.taskForm.value,
+      task: {
+        ...this.taskForm.value,
+        subtasks: newSubTasks,
+      },
     };
 
     console.log('task new value: ', newTaskData);
