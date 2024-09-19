@@ -7,11 +7,12 @@ import {
   updateSubTask,
   updateTaskStatus,
 } from '../../state/boards/actions/board.actions';
+import { TaskFormComponent } from '../../shared/task-form/task-form.component';
 
 @Component({
   selector: 'app-task-detail-modal',
   standalone: true,
-  imports: [],
+  imports: [TaskFormComponent],
   templateUrl: './task-detail-modal.component.html',
   styleUrl: './task-detail-modal.component.sass',
 })
@@ -20,6 +21,7 @@ export class TaskDetailModalComponent {
   statuses: string[] = [];
   board$: Observable<Board | null | undefined>;
   boardId: number = 0;
+  isEditTaskOpen: boolean = false;
   constructor(private store: Store) {
     // this.task$ = this.store.select(selectTask());
     // console.log('task from task detail modal', this.task);
@@ -39,7 +41,6 @@ export class TaskDetailModalComponent {
   updateSubtask(event: any) {
     const isCompleted = event.target.checked;
     const subtaskTitle = event.target.value;
-    
 
     const updatedSubtask = this.task.subtasks.map((subtask: Subtask) => {
       if (subtask.title === subtaskTitle) {
@@ -50,7 +51,6 @@ export class TaskDetailModalComponent {
       }
       return subtask;
     });
-
 
     this.store.dispatch(
       updateSubTask({
@@ -78,5 +78,9 @@ export class TaskDetailModalComponent {
         },
       })
     );
+  }
+
+  toggleEditTask() {
+    this.isEditTaskOpen = !this.isEditTaskOpen;
   }
 }

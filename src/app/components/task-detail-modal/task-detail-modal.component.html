@@ -26,4 +26,11 @@
     </option>
     }
   </select>
+
+  <button (click)="toggleEditTask()">Edit task</button>
+</div>
+
+<!-- TASK DETAIL    -->
+<div [style]="isEditTaskOpen ? 'display: block' : 'display: none'" style="background: lightpink">
+  <app-task-form [task]="task" />
 </div>

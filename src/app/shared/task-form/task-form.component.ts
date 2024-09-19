@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Board } from '../../models/app.model';
+import { Board, Task } from '../../models/app.model';
 import { selectBoardWithParamId } from '../../state/boards/selectors/boards.selectors';
 import { addTask } from '../../state/boards/actions/board.actions';
 
@@ -20,6 +20,7 @@ import { addTask } from '../../state/boards/actions/board.actions';
   styleUrl: './task-form.component.sass',
 })
 export class TaskFormComponent {
+  @Input() task!: Task;
   taskForm: FormGroup;
   // statuses = ['Todo', 'Doing', 'Done'];
   board$: Observable<Board | null | undefined>;
@@ -46,6 +47,13 @@ export class TaskFormComponent {
       }
     });
   }
+  initializeSubtasks() {
+    const subtasks = this.task?.subtasks || [];
+    const subTasksFormControls = subtasks.map((subtask) =>
+      this.fb.control(subtask.title, Validators.required)
+    );
+    return subTasksFormControls;
+  }
 
   // ngOnChanges(simpleChanges: any) {
   //   if (simpleChanges.task) {
@@ -60,6 +68,18 @@ export class TaskFormComponent {
   //     });
   //   }
   // }
+
+  ngOnChanges(simpleChanges: any) {
+    if (simpleChanges.task) {
+      this.taskForm = this.fb.group({
+        // name: [this.task.title || '', Validators.required],
+        title: [this.task.title || '', Validators.required],
+        description: [this.task.description || '', Validators.required],
+        subtasks: this.fb.array(this.initializeSubtasks()),
+        status: [this.task.status || '', Validators.required],
+      });
+    }
+  }
 
   get subtasks() {
     return this.taskForm.get('subtasks') as FormArray;
