@@ -2,15 +2,18 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { LocalStorageService } from '../../../services/localStorageService/local-storage.service';
 import { DataService } from '../../../services/data-service/data.service';
-import { loadBoards, loadBoardsSuccess } from '../actions/board.actions';
+import { addBoard, addTask, deleteBoard, deleteTask, loadBoards, loadBoardsSuccess, updateSubTask, updateTaskStatus } from '../actions/board.actions';
 import { map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { selectBoards } from '../selectors/boards.selectors';
+import { select, Store } from '@ngrx/store';
 
 @Injectable()
 export class BoardEffects {
   constructor(
     private dataService: DataService,
     private actions$: Actions,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private store: Store
   ) {}
 
   loadBoards$ = createEffect(() =>
@@ -33,4 +36,25 @@ export class BoardEffects {
       })
     )
   );
+
+  updateLocaStorage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        addBoard,
+        deleteBoard,
+        addTask,
+        updateTaskStatus,
+        deleteTask,
+        updateSubTask,
+      ),
+      switchMap(() =>
+        this.store.pipe(
+          select(selectBoards),
+          tap((boards) => this.localStorageService.setItem('boards', boards))
+        )
+      )
+    ),
+    { dispatch: false } // This is the key to prevent the effect from triggering another action
+  );
+
 }
