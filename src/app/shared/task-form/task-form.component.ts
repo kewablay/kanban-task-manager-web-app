@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Board, Task } from '../../models/app.model';
 import { selectBoardWithParamId } from '../../state/boards/selectors/boards.selectors';
-import { addTask } from '../../state/boards/actions/board.actions';
+import { addTask, updateTask } from '../../state/boards/actions/board.actions';
 
 @Component({
   selector: 'app-task-form',
@@ -72,7 +72,6 @@ export class TaskFormComponent {
   ngOnChanges(simpleChanges: any) {
     if (simpleChanges.task) {
       this.taskForm = this.fb.group({
-        // name: [this.task.title || '', Validators.required],
         title: [this.task.title || '', Validators.required],
         description: [this.task.description || '', Validators.required],
         subtasks: this.fb.array(this.initializeSubtasks()),
@@ -111,7 +110,11 @@ export class TaskFormComponent {
     };
 
     console.log('task new value: ', newTaskData);
-
-    this.store.dispatch(addTask({ ...newTaskData }));
+    if (this.task) {
+      newTaskData.task.id = this.task.id;
+      this.store.dispatch(updateTask({ ...newTaskData }));
+    } else {
+      this.store.dispatch(addTask({ ...newTaskData }));
+    }
   }
 }

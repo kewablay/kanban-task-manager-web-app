@@ -10,6 +10,7 @@ import {
   loadBoardsSuccess,
   updateBoard,
   updateSubTask,
+  updateTask,
   updateTaskStatus,
 } from '../actions/board.actions';
 import { Task } from '../../../models/app.model';
@@ -71,6 +72,43 @@ export const boardReducer = createReducer(
   }),
 
   //   UPDATE
+  on(updateTask, (state, { boardId, columnName, task }) => {
+    const board = state.entities[boardId];
+  
+    if (!board) return state;
+  
+    // Find the column where the task belongs
+    const columnsWithUpdatedTask = board.columns.map((column) => {
+      if (column.name === task.status) {
+        // Find the task that needs to be updated within this column
+        const updatedTasks = column.tasks.map((existingTask) => {
+          if (existingTask.id === task.id) {
+            // Replace the task with the updated version (including updated subtasks)
+            return { ...task };
+          }
+          return existingTask;
+        });
+  
+        return {
+          ...column,
+          tasks: updatedTasks,
+        };
+      }
+      return column;
+    });
+  
+    // Create the updated board with the modified columns
+    const updatedBoard = {
+      ...board,
+      columns: columnsWithUpdatedTask,
+    };
+  
+    return boardAdapter.updateOne(
+      { id: boardId, changes: updatedBoard },
+      state
+    );
+  }),
+  
   on(updateTaskStatus, (state, { boardId, columnName, task }) => {
     const board = state.entities[boardId];
 
@@ -110,6 +148,9 @@ export const boardReducer = createReducer(
       state
     );
   }),
+
+
+
 
   //   DELETE
   on(deleteTask, (state, { boardId, columnName, taskId }) => {
