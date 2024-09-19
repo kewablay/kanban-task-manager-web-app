@@ -68,28 +68,40 @@ export const boardReducer = createReducer(
       state
     );
   }),
+
   //   UPDATE
   on(updateTask, (state, { boardId, columnName, task }) => {
     const board = state.entities[boardId];
-    
+
     if (!board) return state;
 
-    const updatedColumns = board.columns.map(column => {
+    // Step 1: Remove the task from its original column
+    const updatedColumns = board.columns.map((column) => {
       if (column.name === columnName) {
-        const updatedTasks = column.tasks.map(t => 
-          t.id === task.id ? { ...t, ...task } : t
-        );
+        const updatedTasks = column.tasks.filter((t) => t.id !== task.id);
         return {
           ...column,
-          tasks: updatedTasks
+          tasks: updatedTasks,
         };
       }
       return column;
     });
 
+    // Step 2: Add the task to the new column (based on its updated status)
+    const columnsWithUpdatedTask = updatedColumns.map((column) => {
+      if (column.name === task.status) {
+        return {
+          ...column,
+          tasks: [...column.tasks, task], // Append the updated task while preserving the other tasks
+        };
+      }
+      return column;
+    });
+
+    // Create the updated board with the modified columns
     const updatedBoard = {
       ...board,
-      columns: updatedColumns
+      columns: columnsWithUpdatedTask,
     };
 
     return boardAdapter.updateOne(
@@ -101,15 +113,15 @@ export const boardReducer = createReducer(
   //   DELETE
   on(deleteTask, (state, { boardId, columnName, taskId }) => {
     const board = state.entities[boardId];
-    
+
     if (!board) return state;
 
-    const updatedColumns = board.columns.map(column => {
+    const updatedColumns = board.columns.map((column) => {
       if (column.name === columnName) {
-        const updatedTasks = column.tasks.filter(task => task.id !== taskId);
+        const updatedTasks = column.tasks.filter((task) => task.id !== taskId);
         return {
           ...column,
-          tasks: updatedTasks
+          tasks: updatedTasks,
         };
       }
       return column;
@@ -117,7 +129,7 @@ export const boardReducer = createReducer(
 
     const updatedBoard = {
       ...board,
-      columns: updatedColumns
+      columns: updatedColumns,
     };
 
     return boardAdapter.updateOne(

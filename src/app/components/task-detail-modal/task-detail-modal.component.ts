@@ -34,6 +34,8 @@ export class TaskDetailModalComponent {
         this.statuses = board.columns.map((column) => column.name);
       }
     });
+
+    console.log("TAsk ", this.task)
   }
 
   updateTask(index: number) {
@@ -45,6 +47,38 @@ export class TaskDetailModalComponent {
         boardId: this.boardId,
         columnName: this.task.status,
         task: this.task,
+      })
+    );
+
+  }
+
+  // updateTaskStatus(event: any) {
+  //   console.log(event.target.value);
+
+  //   this.store.dispatch(
+  //     updateTask({
+  //       boardId: this.boardId,
+  //       columnName: event.target.value,
+  //       task: {
+  //         ...this.task,
+  //         status: event.target.value,
+  //       },
+  //     })
+  //   );
+  // }
+
+  updateTaskStatus(event: any) {
+    const newStatus = event.target.value;
+    // console.log("column name: ", )
+
+    this.store.dispatch(
+      updateTask({
+        boardId: this.boardId,
+        columnName: this.task.status, // Old status (current column)
+        task: {
+          ...this.task,
+          status: newStatus, // New status (target column)
+        },
       })
     );
   }
