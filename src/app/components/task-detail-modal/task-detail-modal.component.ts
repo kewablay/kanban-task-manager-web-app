@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { selectBoardWithParamId } from '../../state/boards/selectors/boards.selectors';
 import { Board, Subtask, Task } from '../../models/app.model';
 import {
+  deleteTask,
   updateSubTask,
   updateTaskStatus,
 } from '../../state/boards/actions/board.actions';
@@ -82,5 +83,15 @@ export class TaskDetailModalComponent {
 
   toggleEditTask() {
     this.isEditTaskOpen = !this.isEditTaskOpen;
+  }
+
+  handleDeleteTask(taskId: number) {
+    this.store.dispatch(
+      deleteTask({
+        boardId: this.boardId,
+        taskId: taskId,
+        columnName: this.task.status,
+      })
+    );
   }
 }

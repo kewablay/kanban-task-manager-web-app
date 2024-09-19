@@ -93,28 +93,32 @@ export class TaskFormComponent {
   }
 
   onSubmit() {
-    console.log('task value: ', this.taskForm.value);
-    const newSubTasks = this.taskForm.value.subtasks.map((subtask: string) => {
-      return { title: subtask, isCompleted: false };
-    });
+    if (this.taskForm.invalid) {
+      console.log('task value: ', this.taskForm.value);
+      const newSubTasks = this.taskForm.value.subtasks.map(
+        (subtask: string) => {
+          return { title: subtask, isCompleted: false };
+        }
+      );
 
-    console.log('new subtask : ', this.taskForm.value.subtasks);
+      console.log('new subtask : ', this.taskForm.value.subtasks);
 
-    const newTaskData = {
-      boardId: this.boardId,
-      columnName: this.taskForm.value.status,
-      task: {
-        ...this.taskForm.value,
-        subtasks: newSubTasks,
-      },
-    };
+      const newTaskData = {
+        boardId: this.boardId,
+        columnName: this.taskForm.value.status,
+        task: {
+          ...this.taskForm.value,
+          subtasks: newSubTasks,
+        },
+      };
 
-    console.log('task new value: ', newTaskData);
-    if (this.task) {
-      newTaskData.task.id = this.task.id;
-      this.store.dispatch(updateTask({ ...newTaskData }));
-    } else {
-      this.store.dispatch(addTask({ ...newTaskData }));
+      console.log('task new value: ', newTaskData);
+      if (this.task) {
+        newTaskData.task.id = this.task.id;
+        this.store.dispatch(updateTask({ ...newTaskData }));
+      } else {
+        this.store.dispatch(addTask({ ...newTaskData }));
+      }
     }
   }
 }
