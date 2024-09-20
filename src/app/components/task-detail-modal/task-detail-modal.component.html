@@ -1,0 +1,37 @@
+<div style="background: gray">
+  <h1>Task Detail Modal</h1>
+  <h2>{{ task.title }}</h2>
+  <p>{{ task.description }}</p>
+
+  <ul>
+    @for(subtask of task.subtasks; track $index) {
+    <li>
+      <label>
+        <input
+          [value]="subtask.title"
+          (change)="updateSubtask($event)"
+          [checked]="subtask.isCompleted"
+          type="checkbox"
+        />
+        {{ subtask.title }}
+      </label>
+    </li>
+    }
+  </ul>
+
+  <select (change)="updateStatus($event)" name="statuses">
+    @for(status of statuses; track status) {
+    <option [selected]="task.status === status" value="{{ status }}">
+      {{ status }}
+    </option>
+    }
+  </select>
+
+  <button (click)="toggleEditTask()">Edit task</button>
+  <button (click)="handleDeleteTask(task.id)">Delete task</button>
+</div>
+
+<!-- TASK DETAIL    -->
+<div [style]="isEditTaskOpen ? 'display: block' : 'display: none'" style="background: lightpink">
+  <app-task-form [task]="task" />
+</div>

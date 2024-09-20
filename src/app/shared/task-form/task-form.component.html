@@ -1,5 +1,5 @@
 <form [formGroup]="taskForm" (submit)="onSubmit()">
-  <h2>Task Form</h2>
+  <h2>{{ task ? "Edit Task" : "Add New Task" }}</h2>
   <div>
     <input formControlName="title" type="text" name="title" />
   </div>
@@ -50,5 +50,5 @@
     }
   </select>
 
-  <button type="submit">Create Task</button>
+  <button type="submit">{{task ? "Save Changes" : "Create Task"}}</button>
 </form>

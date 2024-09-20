@@ -41,3 +41,9 @@ export const selectFirstBoardId = createSelector(
 export const selectNextBoardId = createSelector(selectBoardIds, (ids) =>
   ids.length > 0 ? Math.max(...(ids as number[])) + 1 : -1
 );
+
+export const selectTask = (taskId: number, columnId: number) =>
+  createSelector(
+    selectBoardWithParamId,
+    (board) => board?.columns[columnId]?.tasks[taskId]
+  );

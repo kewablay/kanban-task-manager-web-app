@@ -35,14 +35,19 @@ export class BoardFormComponent {
       .subscribe((id) => (this.nextBoardId = id));
   }
 
+  initializeColumns() {
+    const columns = this.board?.columns || [];
+    const columnFormControls = columns.map((column) =>
+      this.fb.control(column.name, Validators.required)
+    );
+    return columnFormControls;
+  }
+
   ngOnChanges(simpleChanges: any) {
     if (simpleChanges.board) {
       this.boardForm = this.fb.group({
-        name: [this.board.name || '', Validators.required],
-        columns: this.fb.array([
-          this.fb.control('Todo'),
-          this.fb.control('Doing'),
-        ]),
+        name: [this.board?.name || '', Validators.required],
+        columns: this.fb.array(this.initializeColumns()),
       });
     }
   }
@@ -60,26 +65,53 @@ export class BoardFormComponent {
   }
 
   // FORM SUBMISSION
+  // onSubmit() {
+  //   if (this.boardForm.valid) {
+  //     console.log(this.boardForm.value);
+  //     console.log(this.columns.value);
+
+  //     const newColumns = this.columns.value.map((column: string) => {
+  //       return { name: column, tasks: [] };
+  //     });
+  //     // console.log(newColumns)
+  //     const newBoard = {
+  //       id: this.nextBoardId,
+  //       name: this.boardForm.value.name,
+  //       columns: newColumns,
+  //     };
+  //     // console.log('new Board ', newBoard);
+
+  //     if (this.board) {
+  //       newBoard.id = this.board.id;
+  //       this.store.dispatch(updateBoard({ board: newBoard }));
+  //     } else {
+  //       this.store.dispatch(addBoard({ board: newBoard }));
+  //     }
+  //   }
+  // }
+
   onSubmit() {
     if (this.boardForm.valid) {
-      console.log(this.boardForm.value);
-      console.log(this.columns.value);
+      // Map columns from the form and keep tasks if updating an existing board
+      const newColumns = this.columns.value.map(
+        (columnName: string, index: number) => {
+          // If updating, preserve tasks from the existing column
+          const existingTasks = this.board?.columns?.[index]?.tasks || [];
+          return { name: columnName, tasks: existingTasks };
+        }
+      );
 
-      const newColumns = this.columns.value.map((column: string) => {
-        return { name: column, tasks: [] };
-      });
-      // console.log(newColumns)
-      const newBoard = {
-        id: this.nextBoardId,
+      const newBoard: Board = {
+        id: this.board ? this.board.id : this.nextBoardId, // Use existing ID for update
         name: this.boardForm.value.name,
         columns: newColumns,
       };
-      // console.log('new Board ', newBoard);
 
       if (this.board) {
-        newBoard.id = this.board.id;
+        // Update existing board
         this.store.dispatch(updateBoard({ board: newBoard }));
       } else {
+        // Create a new board
         this.store.dispatch(addBoard({ board: newBoard }));
       }
     }

@@ -4,7 +4,7 @@
     <h2>{{ column.name }}</h2>
     @for(task of column.tasks; track task) {
     <article>
-      <p>{{ task.title }}</p>
+      <app-task [task]="task" />
       <!-- <p>{{ task.description }}</p> -->
     </article>
     }
