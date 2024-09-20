@@ -1,11 +1,57 @@
-@use './styles/mixins'
-@use './styles/functions'
-@use './styles/variables'
-@use './styles/theme' 
+@use './styles/mixins' as *
+@use './styles/functions' as *
+@use './styles/variables' as *
+@use './styles/theme' as *
+
+
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
 
 
 body
-    font-family: variables.$ff-plus-jakarta-sans
+    font-family: $ff-plus-jakarta-sans
     background: var(--background)
     color: var(--text)
     transition: all .2s ease-in-out
+
+
+h1
+  font-size: get-font-size('header', 'lg')
+  font-weight: bold
+  @include breakpoint(large)
+    font-size: get-font-size('header', 'xl')
+
+h2
+  font-size: get-font-size('header', 'lg')
+
+h3
+  font-size: get-font-size('header', 'md')
+
+p
+  font-size: get-font-size('body', 'md')
+
+small
+  font-size: get-font-size('body', 'xs')
+
+
+
+.text-secondary 
+    color: var(--clr-secondary)
+
+.flex 
+    @include flex($direction: row)
+
+.btn
+  &-primary 
+   @include button('primary')
+
+  &-secondary
+    @include button('secondary')
+
+  &-warning
+    @include button('warning')
+
+  &-ghost
+    all: unset

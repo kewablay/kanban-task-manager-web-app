@@ -1,0 +1,61 @@
+@use './_variables' as *
+
+
+@mixin breakpoint($breakpoint)
+  @if map-has-key($map-for-breakpoints, $breakpoint)
+    @media (min-width: map-get($map-for-breakpoints, $breakpoint))
+      @content
+  @else
+    @error "Breakpoint '#{$breakpoint}' is not defined."
+
+@mixin flex($direction: row, $gap: 1rem)
+    display: flex
+    flex-direction: $direction
+    gap: $gap
+
+    @if $direction == row
+        align-items: center
+    @else
+        justify-content: center
+
+@mixin flex-between($direction: row, $gap: 1rem) 
+    display: flex 
+    flex-direction: $direction
+    gap: $gap
+    @if $direction == row
+        justify-content: space-between
+        align-items: center
+    @else
+        align-items: space-between
+        justify-content: center
+
+@mixin flex-center()
+    display: flex 
+    justify-content: center
+    align-content: center
+
+
+@mixin button($variant)
+  @if map-has-key($button-variants, $variant)
+    @include flex($direction: row, $gap:.5rem )
+    $styles: map-get($button-variants, $variant)
+    background: map-get($styles, background)
+    color: map-get($styles, color)
+    border: none
+    padding: 0.8em 1.2em
+    border-radius: 2rem
+    font-weight: bold
+    cursor: pointer
+    transition: background 0.3s ease, transform 0.3s ease
+
+    &:last-child
+      flex-shrink: 0
+
+    &:hover
+      background: map-get($styles, hover)
+      transform: scale(1.05) // Slightly scale the button on hover
+
+    &:active
+      transform: scale(0.95) // Scale down on click
+  @else
+    @error "Button variant '#{$variant}' not defined."

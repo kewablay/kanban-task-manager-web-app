@@ -1,0 +1,34 @@
+
+@use '../../../styles/_mixins' as *
+@use '../../../styles/_variables' as *
+
+
+header 
+    @include flex-between($direction: row)
+    padding: 1rem
+    background: var(--background)
+    .flex 
+        .logo
+            @include flex-center()
+            
+        .board-name
+            display: none
+            background: none
+            @include breakpoint($breakpoint: medium)
+                display: initial
+            
+        .mobile-board-name
+            all: unset
+            +flex()
+            @include breakpoint($breakpoint: medium)
+                display: none
+
+
+
+    .btn-primary
+        .btn-text 
+            display: none 
+            @include breakpoint($breakpoint: medium)
+                display: initial
+            
+            
