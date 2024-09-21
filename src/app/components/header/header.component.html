@@ -20,8 +20,8 @@
     </button>
   </div>
 
-  <div class="flex">
-    <button class="btn-primary" (click)="openTaskModal()">
+  <div class="flex create-task">
+    <button class="btn-primary" (click)="openCreateTaskModal()">
       <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
         <path
           fill="#FFF"
@@ -31,19 +31,33 @@
       <span class="btn-text"> Create Task </span>
     </button>
 
-    <button class="btn-ghost">
-      <svg width="5" height="20" xmlns="http://www.w3.org/2000/svg"><g fill="#828FA3" fill-rule="evenodd"><circle cx="2.308" cy="2.308" r="2.308"/><circle cx="2.308" cy="10" r="2.308"/><circle cx="2.308" cy="17.692" r="2.308"/></g></svg>
+    <button class="btn-ghost" [cdkMenuTriggerFor]="menu">
+      <svg width="5" height="20" xmlns="http://www.w3.org/2000/svg">
+        <g fill="#828FA3" fill-rule="evenodd">
+          <circle cx="2.308" cy="2.308" r="2.308" />
+          <circle cx="2.308" cy="10" r="2.308" />
+          <circle cx="2.308" cy="17.692" r="2.308" />
+        </g>
+      </svg>
     </button>
-
   </div>
+
+  <ng-template #menu>
+    <div class="options" cdkMenu>
+      <button class=" btn-ghost" (click)="openEditBoardModal()">Edit Board</button>
+      <button class="delete btn-ghost" (click)="deleteBoard(board.id)">
+        Delete Board
+      </button>
+    </div>
+  </ng-template>
   <!-- <button (click)="openEditBoardModal()">Edit Board</button>
   <button (click)="deleteBoard(board.id)">Delete Boards</button> -->
 </header>
 
-<div [style]="{ display: isEditBoardModalOpen ? 'block' : 'none' }">
+<!-- <div [style]="{ display: isEditBoardModalOpen ? 'block' : 'none' }">
   <app-board-form [board]="board" />
-</div>
+</div> -->
 
-<div [style]="{ display: isTaskModalOpen ? 'block' : 'none' }">
+<!-- <div [style]="{ display: isTaskModalOpen ? 'block' : 'none' }">
   <app-task-form />
-</div>
+</div> -->
