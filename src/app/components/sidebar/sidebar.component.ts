@@ -7,6 +7,7 @@ import { AsyncPipe } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { toggleTheme } from '../../state/theme/actions/theme.actions';
 import { BoardFormComponent } from "../../shared/board-form/board-form.component";
+import { Dialog } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,7 +19,7 @@ import { BoardFormComponent } from "../../shared/board-form/board-form.component
 export class SidebarComponent {
   boards$: Observable<Board[]>;
   isAddBoardModalOpen = false;
-  constructor(private store: Store) {
+  constructor(private store: Store,public dialog: Dialog) {
     this.boards$ = this.store.select(selectBoards);
   }
 
@@ -27,7 +28,9 @@ export class SidebarComponent {
   }
 
   openAddBoardModal() {
-    this.isAddBoardModalOpen = !this.isAddBoardModalOpen
+    this.dialog.open(BoardFormComponent, {
+      width: '480px',
+    });
   }
     
 }

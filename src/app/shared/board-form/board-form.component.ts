@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -12,7 +12,8 @@ import {
   updateBoard,
 } from '../../state/boards/actions/board.actions';
 import { selectNextBoardId } from '../../state/boards/selectors/boards.selectors';
-import { Board } from '../../models/app.model';
+import { Board, Column } from '../../models/app.model';
+import { DIALOG_DATA } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-board-form',
@@ -22,9 +23,12 @@ import { Board } from '../../models/app.model';
   styleUrl: './board-form.component.sass',
 })
 export class BoardFormComponent {
+  board = inject(DIALOG_DATA);
   boardForm: FormGroup;
   nextBoardId!: number;
-  @Input() board!: Board;
+
+  // @Input() board!: Board;
+
   constructor(private fb: FormBuilder, private store: Store) {
     this.boardForm = this.fb.group({
       name: ['', Validators.required],
@@ -33,23 +37,23 @@ export class BoardFormComponent {
     this.store
       .select(selectNextBoardId)
       .subscribe((id) => (this.nextBoardId = id));
+
+    console.log('dialog data: ', this.board);
   }
 
   initializeColumns() {
     const columns = this.board?.columns || [];
-    const columnFormControls = columns.map((column) =>
+    const columnFormControls = columns.map((column: Column) =>
       this.fb.control(column.name, Validators.required)
     );
     return columnFormControls;
   }
 
-  ngOnChanges(simpleChanges: any) {
-    if (simpleChanges.board) {
-      this.boardForm = this.fb.group({
-        name: [this.board?.name || '', Validators.required],
-        columns: this.fb.array(this.initializeColumns()),
-      });
-    }
+  ngOnInit() {
+    this.boardForm = this.fb.group({
+      name: [this.board?.name || '', Validators.required],
+      columns: this.fb.array(this.initializeColumns()),
+    });
   }
 
   get columns() {
@@ -100,7 +104,6 @@ export class BoardFormComponent {
           return { name: columnName, tasks: existingTasks };
         }
       );
-
       const newBoard: Board = {
         id: this.board ? this.board.id : this.nextBoardId, // Use existing ID for update
         name: this.boardForm.value.name,
