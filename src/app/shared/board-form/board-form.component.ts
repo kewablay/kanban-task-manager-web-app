@@ -37,8 +37,6 @@ export class BoardFormComponent {
     this.store
       .select(selectNextBoardId)
       .subscribe((id) => (this.nextBoardId = id));
-
-    console.log('dialog data: ', this.board);
   }
 
   initializeColumns() {
