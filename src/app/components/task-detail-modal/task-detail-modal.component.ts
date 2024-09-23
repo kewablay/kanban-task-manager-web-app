@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { Component, inject, Input, input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectBoardWithParamId } from '../../state/boards/selectors/boards.selectors';
@@ -9,21 +9,23 @@ import {
   updateTaskStatus,
 } from '../../state/boards/actions/board.actions';
 import { TaskFormComponent } from '../../shared/task-form/task-form.component';
-import { Dialog } from '@angular/cdk/dialog';
+import { Dialog, DIALOG_DATA } from '@angular/cdk/dialog';
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 
 @Component({
   selector: 'app-task-detail-modal',
   standalone: true,
-  imports: [TaskFormComponent],
+  imports: [TaskFormComponent, CdkMenuTrigger, CdkMenu, CdkMenuItem],
   templateUrl: './task-detail-modal.component.html',
   styleUrl: './task-detail-modal.component.sass',
 })
 export class TaskDetailModalComponent {
-  @Input() task!: Task;
   statuses: string[] = [];
   board$: Observable<Board | null | undefined>;
   boardId: number = 0;
   isEditTaskOpen: boolean = false;
+  task = inject(DIALOG_DATA);
+
   constructor(private store: Store, public dialog: Dialog) {
     // this.task$ = this.store.select(selectTask());
     // console.log('task from task detail modal', this.task);
@@ -85,9 +87,9 @@ export class TaskDetailModalComponent {
 
   openEditTaskModal() {
     this.dialog.open(TaskFormComponent, {
-      width: '80%',
+      width: '85%',
       maxWidth: '480px',
-      data: this.task
+      data: this.task,
     });
   }
 
