@@ -9,7 +9,7 @@ import {
   updateTaskStatus,
 } from '../../state/boards/actions/board.actions';
 import { TaskFormComponent } from '../../shared/task-form/task-form.component';
-import { Dialog, DIALOG_DATA } from '@angular/cdk/dialog';
+import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 
 @Component({
@@ -25,6 +25,7 @@ export class TaskDetailModalComponent {
   boardId: number = 0;
   isEditTaskOpen: boolean = false;
   task = inject(DIALOG_DATA);
+  private taskDetailModalRef = inject(DialogRef<TaskDetailModalComponent>);
 
   constructor(private store: Store, public dialog: Dialog) {
     // this.task$ = this.store.select(selectTask());
@@ -86,6 +87,7 @@ export class TaskDetailModalComponent {
   }
 
   openEditTaskModal() {
+    this.taskDetailModalRef.close()
     this.dialog.open(TaskFormComponent, {
       width: '85%',
       maxWidth: '480px',

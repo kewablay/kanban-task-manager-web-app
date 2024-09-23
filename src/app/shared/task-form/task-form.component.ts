@@ -10,7 +10,11 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Board, Subtask, Task } from '../../models/app.model';
 import { selectBoardWithParamId } from '../../state/boards/selectors/boards.selectors';
-import { addTask, updateTask } from '../../state/boards/actions/board.actions';
+import {
+  addTask,
+  updateTask,
+  updateTaskStatus,
+} from '../../state/boards/actions/board.actions';
 import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 @Component({
@@ -116,6 +120,21 @@ export class TaskFormComponent {
       // console.log('task new value: ', newTaskData);
       if (this.task) {
         newTaskData.task.id = this.task.id;
+
+        // if the status has been touched or changes send a dispatch to update the status
+        if (this.taskForm.get('status')?.touched) {
+          this.store.dispatch(
+            updateTaskStatus({
+              boardId: this.boardId,
+              columnName: this.task.status, // Old status (current column)
+              task: {
+                ...this.task,
+                status: this.taskForm.value.status, // New status (target column)
+              },
+            })
+          );
+        }
+
         this.store.dispatch(updateTask({ ...newTaskData }));
       } else {
         this.store.dispatch(addTask({ ...newTaskData }));
