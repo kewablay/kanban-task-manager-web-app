@@ -46,16 +46,15 @@
     border-radius: 2rem
     font-weight: bold
     cursor: pointer
-    transition: background 0.3s ease, transform 0.3s ease
+    transition: background 0.3s ease, transform 0.15s ease
 
     &:last-child
       flex-shrink: 0
 
     &:hover
       background: map-get($styles, hover)
-      transform: scale(1.05) // Slightly scale the button on hover
 
     &:active
-      transform: scale(0.95) // Scale down on click
+      transform: scale(0.99) // Scale down on click
   @else
     @error "Button variant '#{$variant}' not defined."

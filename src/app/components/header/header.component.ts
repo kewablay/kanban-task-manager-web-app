@@ -32,14 +32,16 @@ export class HeaderComponent {
 
   openEditBoardModal() {
     this.dialog.open(BoardFormComponent, {
-      width: '480px',
+      width: '80%',
+      maxWidth: '480px',
       data: this.board
     });
   }
   
   openCreateTaskModal() {
     this.dialog.open(TaskFormComponent, {
-      width: '480px',
+      width: '80%',
+      maxWidth: '480px'
     });
   }
 

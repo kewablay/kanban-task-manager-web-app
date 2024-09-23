@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -8,9 +8,10 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Board, Task } from '../../models/app.model';
+import { Board, Subtask, Task } from '../../models/app.model';
 import { selectBoardWithParamId } from '../../state/boards/selectors/boards.selectors';
 import { addTask, updateTask } from '../../state/boards/actions/board.actions';
+import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-task-form',
@@ -20,12 +21,13 @@ import { addTask, updateTask } from '../../state/boards/actions/board.actions';
   styleUrl: './task-form.component.sass',
 })
 export class TaskFormComponent {
-  @Input() task!: Task;
+  task = inject(DIALOG_DATA);
   taskForm: FormGroup;
   // statuses = ['Todo', 'Doing', 'Done'];
   board$: Observable<Board | null | undefined>;
   boardId!: number;
   statuses: string[] = [];
+  private taskDialogRef = inject(DialogRef<TaskFormComponent>);
 
   constructor(private fb: FormBuilder, private store: Store) {
     this.taskForm = fb.group({
@@ -46,10 +48,19 @@ export class TaskFormComponent {
         this.statuses = board.columns.map((column) => column.name);
       }
     });
+
+    if (this.task) {
+      this.taskForm = this.fb.group({
+        title: [this.task.title || '', Validators.required],
+        description: [this.task.description || '', Validators.required],
+        subtasks: this.fb.array(this.initializeSubtasks()),
+        status: [this.task.status || '', Validators.required],
+      });
+    }
   }
   initializeSubtasks() {
     const subtasks = this.task?.subtasks || [];
-    const subTasksFormControls = subtasks.map((subtask) =>
+    const subTasksFormControls = subtasks.map((subtask: Subtask) =>
       this.fb.control(subtask.title, Validators.required)
     );
     return subTasksFormControls;
@@ -69,17 +80,6 @@ export class TaskFormComponent {
   //   }
   // }
 
-  ngOnChanges(simpleChanges: any) {
-    if (simpleChanges.task) {
-      this.taskForm = this.fb.group({
-        title: [this.task.title || '', Validators.required],
-        description: [this.task.description || '', Validators.required],
-        subtasks: this.fb.array(this.initializeSubtasks()),
-        status: [this.task.status || '', Validators.required],
-      });
-    }
-  }
-
   get subtasks() {
     return this.taskForm.get('subtasks') as FormArray;
   }
@@ -93,8 +93,9 @@ export class TaskFormComponent {
   }
 
   onSubmit() {
-    if (this.taskForm.invalid) {
-      console.log('task value: ', this.taskForm.value);
+    // console.log('About to submit the task form ....');
+    if (this.taskForm.valid) {
+      // console.log('task value: ', this.taskForm.value);
       const newSubTasks = this.taskForm.value.subtasks.map(
         (subtask: string) => {
           return { title: subtask, isCompleted: false };
@@ -112,13 +113,14 @@ export class TaskFormComponent {
         },
       };
 
-      console.log('task new value: ', newTaskData);
+      // console.log('task new value: ', newTaskData);
       if (this.task) {
         newTaskData.task.id = this.task.id;
         this.store.dispatch(updateTask({ ...newTaskData }));
       } else {
         this.store.dispatch(addTask({ ...newTaskData }));
       }
+      this.taskDialogRef.close();
     }
   }
 }

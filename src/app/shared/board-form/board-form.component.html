@@ -12,8 +12,9 @@
   </div>
 
   <div formArrayName="columns" class="columns">
+    <label for="columns-input-group">Board Columns</label>
     @for(column of columns.controls; track $index) {
-    <div>
+    <div class="columns-input-group">
       <input
         id="columnns-{{ $index }}"
         type="text"

@@ -9,6 +9,7 @@ import {
   updateTaskStatus,
 } from '../../state/boards/actions/board.actions';
 import { TaskFormComponent } from '../../shared/task-form/task-form.component';
+import { Dialog } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-task-detail-modal',
@@ -23,9 +24,10 @@ export class TaskDetailModalComponent {
   board$: Observable<Board | null | undefined>;
   boardId: number = 0;
   isEditTaskOpen: boolean = false;
-  constructor(private store: Store) {
+  constructor(private store: Store, public dialog: Dialog) {
     // this.task$ = this.store.select(selectTask());
     // console.log('task from task detail modal', this.task);
+
     this.board$ = this.store.select(selectBoardWithParamId);
   }
 
@@ -81,8 +83,12 @@ export class TaskDetailModalComponent {
     );
   }
 
-  toggleEditTask() {
-    this.isEditTaskOpen = !this.isEditTaskOpen;
+  openEditTaskModal() {
+    this.dialog.open(TaskFormComponent, {
+      width: '80%',
+      maxWidth: '480px',
+      data: this.task
+    });
   }
 
   handleDeleteTask(taskId: number) {

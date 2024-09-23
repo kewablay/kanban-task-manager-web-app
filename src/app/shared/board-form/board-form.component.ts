@@ -13,7 +13,7 @@ import {
 } from '../../state/boards/actions/board.actions';
 import { selectNextBoardId } from '../../state/boards/selectors/boards.selectors';
 import { Board, Column } from '../../models/app.model';
-import { DIALOG_DATA } from '@angular/cdk/dialog';
+import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-board-form',
@@ -26,6 +26,7 @@ export class BoardFormComponent {
   board = inject(DIALOG_DATA);
   boardForm: FormGroup;
   nextBoardId!: number;
+  private boardFormRef = inject(DialogRef<BoardFormComponent>);
 
   // @Input() board!: Board;
 
@@ -48,10 +49,12 @@ export class BoardFormComponent {
   }
 
   ngOnInit() {
-    this.boardForm = this.fb.group({
-      name: [this.board?.name || '', Validators.required],
-      columns: this.fb.array(this.initializeColumns()),
-    });
+    if (this.board) {
+      this.boardForm = this.fb.group({
+        name: [this.board?.name || '', Validators.required],
+        columns: this.fb.array(this.initializeColumns()),
+      });
+    }
   }
 
   get columns() {
@@ -110,11 +113,15 @@ export class BoardFormComponent {
 
       if (this.board) {
         // Update existing board
+        console.log('Modal: About to update board after ...');
         this.store.dispatch(updateBoard({ board: newBoard }));
       } else {
         // Create a new board
+        console.log('Modal: About to create board after ...');
         this.store.dispatch(addBoard({ board: newBoard }));
       }
+
+      this.boardFormRef.close();
     }
   }
 }

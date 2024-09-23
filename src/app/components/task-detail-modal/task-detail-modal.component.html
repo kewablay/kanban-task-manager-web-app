@@ -27,11 +27,11 @@
     }
   </select>
 
-  <button (click)="toggleEditTask()">Edit task</button>
+  <button (click)="openEditTaskModal()">Edit task</button>
   <button (click)="handleDeleteTask(task.id)">Delete task</button>
 </div>
 
-<!-- TASK DETAIL    -->
+<!-- TASK DETAIL   
 <div [style]="isEditTaskOpen ? 'display: block' : 'display: none'" style="background: lightpink">
   <app-task-form [task]="task" />
-</div>
+</div> -->
