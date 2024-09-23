@@ -29,13 +29,33 @@ h2
 h3
   font-size: get-font-size('header', 'md')
 
-p
+p, label
   font-size: get-font-size('body', 'md')
 
 small
   font-size: get-font-size('body', 'xs')
 
+input 
+  padding: .7rem 1rem
+  border: 1px solid var(--lines)
+  background: var(--bg-accent)
+  color: var(--text)
+  border-radius: 5px
+  transition: .2s ease
 
+  &:focus, &:focus-visible
+    border: 1px solid var(--primary)
+    outline: 1px solid var(--primary)
+
+
+button 
+  display: flex 
+  justify-content: center 
+  align-items: center 
+
+  &:focus, &:focus-visible
+    border: 1px solid var(--primary)
+    outline: none
 
 .text-secondary 
     color: var(--clr-secondary)
