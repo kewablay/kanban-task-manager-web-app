@@ -11,6 +11,7 @@ import {
 import { TaskFormComponent } from '../../shared/task-form/task-form.component';
 import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { DeleteDialogComponent } from '../../shared/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-task-detail-modal',
@@ -96,12 +97,19 @@ export class TaskDetailModalComponent {
   }
 
   handleDeleteTask(taskId: number) {
-    this.store.dispatch(
-      deleteTask({
-        boardId: this.boardId,
-        taskId: taskId,
-        columnName: this.task.status,
-      })
-    );
+    this.taskDetailModalRef.close()
+    
+    this.dialog.open(DeleteDialogComponent, {
+      width: '85%',
+      maxWidth: '480px', 
+      data: this.task
+    })
+    // this.store.dispatch(
+    //   deleteTask({
+    //     boardId: this.boardId,
+    //     taskId: taskId,
+    //     columnName: this.task.status,
+    //   })
+    // );
   }
 }
