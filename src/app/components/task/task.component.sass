@@ -1,0 +1,15 @@
+@use '../../../styles/_mixins.sass' as *
+    
+.task 
+    +flex($direction: column, $gap: .5rem)
+    background: var(--bg-accent)
+    padding: 1.5rem
+    border-radius: 8px
+    box-shadow: 0px 4px 6px 0px var(--card-shadow)
+    border: 1px solid rgba(0, 0, 0, 0)
+    cursor: pointer
+    transition: .2s ease
+
+
+    &:hover 
+        border-color: var(--primary)
