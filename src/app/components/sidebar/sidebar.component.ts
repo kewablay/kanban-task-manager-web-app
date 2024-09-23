@@ -29,7 +29,8 @@ export class SidebarComponent {
 
   openAddBoardModal() {
     this.dialog.open(BoardFormComponent, {
-      width: '480px',
+      width: '85%',
+      maxWidth: '480px',
     });
   }
     
