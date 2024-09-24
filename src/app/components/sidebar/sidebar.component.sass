@@ -13,6 +13,8 @@
 .sidebar 
     padding: 1.5rem
     padding-left: 0
+    background: var(--bg-accent)
+    border-radius: 10px
 
 
     h3
@@ -56,3 +58,5 @@
 
 .theme 
     margin-top: 1.5rem
+    @include breakpoint($breakpoint: medium)
+        display: none
