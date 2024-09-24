@@ -1,3 +1,51 @@
 @use '../../../styles/variables' as *
+@use '../../../styles/mixins' as *
+@use '../../../styles/_functions' as *
+
 .active-board
-    color: red
+    background: var(--primary)
+    color: white !important
+
+    svg
+        path 
+            fill: white !important
+
+.sidebar 
+    padding: 1.5rem
+    padding-left: 0
+
+    h3
+        color: var(--text-secondary)
+        margin-bottom: 1rem
+        text-transform: uppercase
+        letter-spacing: 1px
+        padding-left: 1.5rem
+        font-weight: 500
+
+    .boards-list
+        +flex($direction: column, $gap: .5rem)  
+        margin-bottom: 1.2rem
+
+        .board 
+            +flex($direction: row, $gap: .8rem)
+            align-items: center
+            color: var(--text-secondary)
+            padding: 1rem
+            padding-left: 1.5rem
+            border-top-right-radius: 2rem
+            border-bottom-right-radius: 2rem
+            font-weight: 700
+            cursor: pointer
+
+            &:not(.active-board):hover
+                background: var(--background)
+
+.create-board
+    +flex($direction: row, $gap: .8rem)
+    color: var(--primary)
+    font-weight: bold
+    padding-left: 1.5rem
+
+    svg
+        path 
+            fill: var(--primary)

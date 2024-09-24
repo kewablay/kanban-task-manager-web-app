@@ -1,13 +1,83 @@
-<section>
+<section class="sidebar">
   <h3>All Boards ({{ (boards$ | async)?.length }})</h3>
-  @for(board of boards$ | async; track board) {
-  <div>
-    <a routerLinkActive="active-board" [routerLink]="['/board', board.id]">{{
-      board.name
-    }}</a>
+  <div class="boards-list">
+    @for(board of boards$ | async; track board) {
+    <div
+      class="board"
+      routerLinkActive="active-board"
+      [routerLink]="['/board', board.id]"
+    >
+      <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M0 2.889A2.889 2.889 0 0 1 2.889 0H13.11A2.889 2.889 0 0 1 16 2.889V13.11A2.888 2.888 0 0 1 13.111 16H2.89A2.889 2.889 0 0 1 0 13.111V2.89Zm1.333 5.555v4.667c0 .859.697 1.556 1.556 1.556h6.889V8.444H1.333Zm8.445-1.333V1.333h-6.89A1.556 1.556 0 0 0 1.334 2.89V7.11h8.445Zm4.889-1.333H11.11v4.444h3.556V5.778Zm0 5.778H11.11v3.11h2a1.556 1.556 0 0 0 1.556-1.555v-1.555Zm0-7.112V2.89a1.555 1.555 0 0 0-1.556-1.556h-2v3.111h3.556Z"
+          fill="#828FA3"
+        />
+      </svg>
+      <span>
+
+        {{ board.name }}
+      </span>
+    </div>
+    }
   </div>
-  }
-  <button (click)="openAddBoardModal()">Create New Board</button>
-  <button (click)="toggleTheme()">toggleTheme</button>
+  <!-- <button (click)="openAddBoardModal()">Create New Board</button>
+  <button (click)="toggleTheme()">toggleTheme</button> -->
+
+  <button
+    [mat-dialog-close]="true"
+    (click)="openAddBoardModal()"
+    class="create-board btn-ghost"
+  >
+    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M0 2.889A2.889 2.889 0 0 1 2.889 0H13.11A2.889 2.889 0 0 1 16 2.889V13.11A2.888 2.888 0 0 1 13.111 16H2.89A2.889 2.889 0 0 1 0 13.111V2.89Zm1.333 5.555v4.667c0 .859.697 1.556 1.556 1.556h6.889V8.444H1.333Zm8.445-1.333V1.333h-6.89A1.556 1.556 0 0 0 1.334 2.89V7.11h8.445Zm4.889-1.333H11.11v4.444h3.556V5.778Zm0 5.778H11.11v3.11h2a1.556 1.556 0 0 0 1.556-1.555v-1.555Zm0-7.112V2.89a1.555 1.555 0 0 0-1.556-1.556h-2v3.111h3.556Z"
+        fill="#828FA3"
+      />
+    </svg>
+    + Create New Board
+  </button>
 </section>
 
+<!-- <div class="sidebar">
+  <div class="boards">
+    @if(boards$ | async; as boards) {
+    <h3>All Boards ({{ boards.length }})</h3>
+
+    <ul>
+      @for(board of boards; track board.id) {
+      <li
+        routerLinkActive="activeboard"
+        [routerLink]="['/board', board.id]"
+        [class]="board.id === (activeBoard$ | async)?.id ? 'active' : 'board'"
+      >
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M0 2.889A2.889 2.889 0 0 1 2.889 0H13.11A2.889 2.889 0 0 1 16 2.889V13.11A2.888 2.888 0 0 1 13.111 16H2.89A2.889 2.889 0 0 1 0 13.111V2.89Zm1.333 5.555v4.667c0 .859.697 1.556 1.556 1.556h6.889V8.444H1.333Zm8.445-1.333V1.333h-6.89A1.556 1.556 0 0 0 1.334 2.89V7.11h8.445Zm4.889-1.333H11.11v4.444h3.556V5.778Zm0 5.778H11.11v3.11h2a1.556 1.556 0 0 0 1.556-1.555v-1.555Zm0-7.112V2.89a1.555 1.555 0 0 0-1.556-1.556h-2v3.111h3.556Z"
+            fill="#828FA3"
+          />
+        </svg>
+
+        {{ board.name }}
+      </li>
+      }
+    </ul>
+    }
+    <button
+      [mat-dialog-close]="true"
+      (click)="openCreateForm()"
+      class="createBoard"
+    >
+      <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M0 2.889A2.889 2.889 0 0 1 2.889 0H13.11A2.889 2.889 0 0 1 16 2.889V13.11A2.888 2.888 0 0 1 13.111 16H2.89A2.889 2.889 0 0 1 0 13.111V2.89Zm1.333 5.555v4.667c0 .859.697 1.556 1.556 1.556h6.889V8.444H1.333Zm8.445-1.333V1.333h-6.89A1.556 1.556 0 0 0 1.334 2.89V7.11h8.445Zm4.889-1.333H11.11v4.444h3.556V5.778Zm0 5.778H11.11v3.11h2a1.556 1.556 0 0 0 1.556-1.555v-1.555Zm0-7.112V2.89a1.555 1.555 0 0 0-1.556-1.556h-2v3.111h3.556Z"
+          fill="#828FA3"
+        />
+      </svg>
+      + Create New Board
+    </button>
+  </div>
+
+  <div class="theme">
+    <app-theme-toggle />
+  </div>
+</div> -->

@@ -5,6 +5,9 @@ import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 import { BoardContentComponent } from '../../components/board-content/board-content.component';
 import { AsyncPipe } from '@angular/common';
 import { HeaderComponent } from '../../components/header/header.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { SidenavComponent } from "../../components/sidenav/sidenav.component";
 
 @Component({
   selector: 'app-board-detail',
@@ -14,7 +17,10 @@ import { HeaderComponent } from '../../components/header/header.component';
     BoardContentComponent,
     AsyncPipe,
     HeaderComponent,
-  ],
+    MatSidenavModule,
+    MatButtonModule,
+    SidenavComponent
+],
   templateUrl: './board-detail.component.html',
   styleUrl: './board-detail.component.sass',
 })
