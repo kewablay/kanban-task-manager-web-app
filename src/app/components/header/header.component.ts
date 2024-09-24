@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { TaskFormComponent } from '../../shared/task-form/task-form.component';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import {Dialog, DialogModule} from '@angular/cdk/dialog';
+import { DeleteDialogComponent } from '../../shared/delete-dialog/delete-dialog.component';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -46,7 +47,13 @@ export class HeaderComponent {
   }
 
   deleteBoard(id: number) {
-    this.store.dispatch(deleteBoard({ boardId: id }));
-    this.router.navigate(['/']);
+
+    this.dialog.open(DeleteDialogComponent, {
+      width: '85%',
+      maxWidth: '480px', 
+      data: this.board
+    })
+    // this.store.dispatch(deleteBoard({ boardId: id }));
+    // this.router.navigate(['/']);
   }
 }
