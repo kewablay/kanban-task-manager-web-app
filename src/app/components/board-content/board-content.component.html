@@ -1,10 +1,15 @@
 <main class="column-list">
   @for(column of board.columns; track column) {
   <section class="column">
-    <h2 class="column-title">{{ column.name }} ({{ column.tasks.length}})</h2>
+    <h2 class="column-title">{{ column.name }} ({{ column.tasks.length }})</h2>
     @for(task of column.tasks; track task) {
     <app-task [task]="task" />
     }
   </section>
   }
+  <button class="add-column column btn-ghost" (click)="openEditBoardModal()">
+    <h3 >
+      + Add New Column
+    </h3>
+  </button>
 </main>
