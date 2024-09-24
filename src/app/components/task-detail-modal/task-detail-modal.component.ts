@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { Component, inject, Input, input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectBoardWithParamId } from '../../state/boards/selectors/boards.selectors';
@@ -9,23 +9,29 @@ import {
   updateTaskStatus,
 } from '../../state/boards/actions/board.actions';
 import { TaskFormComponent } from '../../shared/task-form/task-form.component';
+import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { DeleteDialogComponent } from '../../shared/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-task-detail-modal',
   standalone: true,
-  imports: [TaskFormComponent],
+  imports: [TaskFormComponent, CdkMenuTrigger, CdkMenu, CdkMenuItem],
   templateUrl: './task-detail-modal.component.html',
   styleUrl: './task-detail-modal.component.sass',
 })
 export class TaskDetailModalComponent {
-  @Input() task!: Task;
   statuses: string[] = [];
   board$: Observable<Board | null | undefined>;
   boardId: number = 0;
   isEditTaskOpen: boolean = false;
-  constructor(private store: Store) {
+  task = inject(DIALOG_DATA);
+  private taskDetailModalRef = inject(DialogRef<TaskDetailModalComponent>);
+
+  constructor(private store: Store, public dialog: Dialog) {
     // this.task$ = this.store.select(selectTask());
     // console.log('task from task detail modal', this.task);
+
     this.board$ = this.store.select(selectBoardWithParamId);
   }
 
@@ -81,17 +87,29 @@ export class TaskDetailModalComponent {
     );
   }
 
-  toggleEditTask() {
-    this.isEditTaskOpen = !this.isEditTaskOpen;
+  openEditTaskModal() {
+    this.taskDetailModalRef.close()
+    this.dialog.open(TaskFormComponent, {
+      width: '85%',
+      maxWidth: '480px',
+      data: this.task,
+    });
   }
 
   handleDeleteTask(taskId: number) {
-    this.store.dispatch(
-      deleteTask({
-        boardId: this.boardId,
-        taskId: taskId,
-        columnName: this.task.status,
-      })
-    );
+    this.taskDetailModalRef.close()
+    
+    this.dialog.open(DeleteDialogComponent, {
+      width: '85%',
+      maxWidth: '480px', 
+      data: this.task
+    })
+    // this.store.dispatch(
+    //   deleteTask({
+    //     boardId: this.boardId,
+    //     taskId: taskId,
+    //     columnName: this.task.status,
+    //   })
+    // );
   }
 }

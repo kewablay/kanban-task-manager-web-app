@@ -1,22 +1,40 @@
 <form [formGroup]="boardForm" (submit)="onSubmit()">
-  <h2>{{board ? "Edit Board" : "Add New Board"}}</h2>
-  <label for="name">Name: </label>
-  <input
-    type="text"
-    name="name"
-    formControlName="name"
-    placeholder="eg. Web design"
-  />
+  <h2>{{ board ? "Edit Board" : "Add New Board" }}</h2>
+  <div class="input-group">
+    <label for="name">Board Name </label>
+    <input
+      type="text"
+      name="name"
+      formControlName="name"
+      s
+      placeholder="eg. Web design"
+    />
+  </div>
 
-  <div formArrayName="columns">
+  <div formArrayName="columns" class="columns">
+    <label for="columns-input-group">Board Columns</label>
     @for(column of columns.controls; track $index) {
-    <div>
-      <input id="columnns-{{ $index }}" type="text" formControlName="{{$index}}" />
-      <button type="button" (click)="removeColumn($index)">-</button>
+    <div class="columns-input-group">
+      <input
+        id="columnns-{{ $index }}"
+        type="text"
+        formControlName="{{ $index }}"
+      />
+      <!-- close button -->
+      <button class="btn-ghost" type="button" (click)="removeColumn($index)">
+        <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+          <g fill="#828FA3" fill-rule="evenodd">
+            <path d="m12.728 0 2.122 2.122L2.122 14.85 0 12.728z" />
+            <path d="M0 2.122 2.122 0 14.85 12.728l-2.122 2.122z" />
+          </g>
+        </svg>
+      </button>
     </div>
     }
+    <button class="btn-secondary" type="button" (click)="addColumn()">+ Add another column</button>
   </div>
-  <button type="button" (click)="addColumn()">+ Add another column</button>
 
-  <button type="submit">{{board ? "Save Changes": "Create New Board"}}</button>
+  <button type="submit" class="btn-primary">
+    {{ board ? "Save Changes" : "Create New Board" }}
+  </button>
 </form>

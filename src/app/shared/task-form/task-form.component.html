@@ -1,21 +1,30 @@
 <form [formGroup]="taskForm" (submit)="onSubmit()">
   <h2>{{ task ? "Edit Task" : "Add New Task" }}</h2>
-  <div>
-    <input formControlName="title" type="text" name="title" />
+  <div class="input-group">
+    <label for="title">Title</label>
+    <input
+      placeholder="e.g. Take coffee break"
+      formControlName="title"
+      type="text"
+      name="title"
+    />
   </div>
-  <div>
+  <div class="input-group">
+    <label for="description">Description</label>
     <textarea
       formControlName="description"
       name="description"
       rows="3"
       l="30"
+      placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
     ></textarea>
   </div>
 
   <!-- Sub tasks  -->
-  <div formArrayName="subtasks">
+  <div formArrayName="subtasks" class="subtasks">
+    <label for="subtasks-input-group">Subtasks</label>
     @for(subtask of subtasks.controls; track $index) {
-    <div>
+    <div class="input-group subtasks-input-group">
       @if($index == 0) {
       <input
         id="columnns-{{ $index }}"
@@ -38,11 +47,21 @@
         formControlName="{{ $index }}"
       />
       }
-      <button type="button" (click)="removeSubtask($index)">-</button>
+      <!-- close button -->
+      <button class="btn-ghost" type="button" (click)="removeSubtask($index)">
+        <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+          <g fill="#828FA3" fill-rule="evenodd">
+            <path d="m12.728 0 2.122 2.122L2.122 14.85 0 12.728z" />
+            <path d="M0 2.122 2.122 0 14.85 12.728l-2.122 2.122z" />
+          </g>
+        </svg>
+      </button>
     </div>
     }
   </div>
-  <button type="button" (click)="addSubTask()">+ Add another column</button>
+  <button type="button" class="btn-secondary" (click)="addSubTask()">
+    Add another column
+  </button>
 
   <select formControlName="status" name="status">
     @for(status of statuses; track status) {
@@ -50,5 +69,7 @@
     }
   </select>
 
-  <button type="submit">{{task ? "Save Changes" : "Create Task"}}</button>
+  <button type="submit" class="btn-primary">
+    {{ task ? "Save Changes" : "Create Task" }}
+  </button>
 </form>

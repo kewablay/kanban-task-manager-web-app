@@ -1,11 +1,82 @@
-@use './styles/mixins'
-@use './styles/functions'
-@use './styles/variables'
-@use './styles/theme' 
+@use './styles/mixins' as *
+@use './styles/functions' as *
+@use './styles/variables' as *
+@use './styles/theme' as *
+
+
+*
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+  font-family: $ff-plus-jakarta-sans
 
 
 body
-    font-family: variables.$ff-plus-jakarta-sans
+    font-family: $ff-plus-jakarta-sans
     background: var(--background)
     color: var(--text)
     transition: all .2s ease-in-out
+
+
+h1
+  font-size: get-font-size('header', 'lg')
+  font-weight: bold
+  @include breakpoint(large)
+    font-size: get-font-size('header', 'xl')
+
+h2
+  font-size: get-font-size('header', 'lg')
+
+h3
+  font-size: get-font-size('header', 'md')
+
+p, label
+  font-size: get-font-size('body', 'md')
+
+small
+  font-size: get-font-size('body', 'xs')
+
+input , textarea, select
+  padding: .7rem 1rem
+  border: 1px solid var(--lines)
+  background: var(--bg-accent)
+  color: var(--text)
+  border-radius: 5px
+  transition: .2s ease
+
+  &:focus, &:focus-visible
+    border: 1px solid var(--primary)
+    outline: 1px solid var(--primary)
+
+
+button 
+  display: flex 
+  justify-content: center 
+  align-items: center 
+  cursor: pointer
+
+  // &:focus, &:focus-visible
+  //   border: 1px solid var(--primary)
+  //   outline: none
+
+.text-secondary 
+    color: var(--text-secondary)
+    font-weight: bold
+
+.flex 
+    @include flex($direction: row)
+
+.btn
+  &-primary 
+   @include button('primary')
+
+  &-secondary
+    @include button('secondary')
+
+  &-warning
+    @include button('warning')
+
+  &-ghost
+    appearance: none
+    border: none 
+    background: none

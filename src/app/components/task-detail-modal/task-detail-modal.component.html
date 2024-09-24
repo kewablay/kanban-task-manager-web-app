@@ -1,37 +1,63 @@
-<div style="background: gray">
-  <h1>Task Detail Modal</h1>
-  <h2>{{ task.title }}</h2>
-  <p>{{ task.description }}</p>
+<div class="task-detail">
+  <div class="task-detail-header">
+    <h2 class="title">{{ task.title }}</h2>
 
-  <ul>
+    <button class="btn-ghost" [cdkMenuTriggerFor]="menu">
+      <svg width="5" height="25" xmlns="http://www.w3.org/2000/svg">
+        <g fill="#828FA3" fill-rule="evenodd">
+          <circle cx="2.308" cy="2.308" r="2.308" />
+          <circle cx="2.308" cy="10" r="2.308" />
+          <circle cx="2.308" cy="17.692" r="2.308" />
+        </g>
+      </svg>
+    </button>
+
+    <!-- popup  menu  -->
+    <ng-template #menu>
+      <div class="options" cdkMenu>
+        <button class="btn-ghost" (click)="openEditTaskModal()">
+          Edit Task
+        </button>
+        <button class="delete btn-ghost" (click)="handleDeleteTask(task.id)">
+          Delete Task
+        </button>
+      </div>
+    </ng-template>
+    <!--  menu ends -->
+  </div>
+  <p class="description">{{ task.description }}</p>
+
+  <div class="subtask-list">
     @for(subtask of task.subtasks; track $index) {
-    <li>
-      <label>
-        <input
-          [value]="subtask.title"
-          (change)="updateSubtask($event)"
-          [checked]="subtask.isCompleted"
-          type="checkbox"
-        />
-        {{ subtask.title }}
-      </label>
-    </li>
-    }
-  </ul>
 
-  <select (change)="updateStatus($event)" name="statuses">
-    @for(status of statuses; track status) {
-    <option [selected]="task.status === status" value="{{ status }}">
-      {{ status }}
-    </option>
+    <label class="subtask" [class.completed]="subtask.isCompleted">
+      <input
+        [value]="subtask.title"
+        (change)="updateSubtask($event)"
+        [checked]="subtask.isCompleted"
+        type="checkbox"
+      />
+      <span>{{ subtask.title }}</span>
+    </label>
     }
-  </select>
+  </div>
 
-  <button (click)="toggleEditTask()">Edit task</button>
-  <button (click)="handleDeleteTask(task.id)">Delete task</button>
+  <div class="input-group">
+    <label for="statuses">Current Status</label>
+    <select (change)="updateStatus($event)" name="statuses">
+      @for(status of statuses; track status) {
+      <option [selected]="task.status === status" value="{{ status }}">
+        {{ status }}
+      </option>
+      }
+    </select>
+  </div>
+
+  <!-- <button class="" (click)="openEditTaskModal()">Edit task</button>
+  <button (click)="handleDeleteTask(task.id)">Delete task</button> -->
 </div>
 
-<!-- TASK DETAIL    -->
+<!-- TASK DETAIL   
 <div [style]="isEditTaskOpen ? 'display: block' : 'display: none'" style="background: lightpink">
   <app-task-form [task]="task" />
-</div>
+</div> -->

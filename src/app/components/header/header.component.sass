@@ -1,0 +1,63 @@
+
+@use '../../../styles/_mixins' as *
+@use '../../../styles/_variables' as *
+
+
+header 
+    @include flex-between($direction: row)
+    padding: 1rem
+    background: var(--bg-accent)
+    border-bottom: 1px solid var(--lines)
+    transition: .2s ease
+    .flex 
+        .logo
+            @include flex-center()
+            
+        .board-name
+            display: none
+            background: none
+            @include breakpoint($breakpoint: medium)
+                display: initial
+            
+        .mobile-board-name
+            all: unset
+            +flex()
+            @include breakpoint($breakpoint: medium)
+                display: none
+
+    .create-task 
+        .btn-ghost 
+            padding: .5rem
+            
+
+    .btn-primary
+        .btn-text 
+            display: none 
+            @include breakpoint($breakpoint: medium)
+                display: initial
+            
+
+.cdk-menu
+    +flex($direction: column, $gap: .5rem)
+    padding: .5rem
+    background: var(--background)
+    border-radius: 10px
+    box-shadow: var(--card-shadow)
+    margin-top: 1rem
+    width: fit-content
+    border: .5px solid var(--lines)
+
+    button
+        // width: 100%
+        padding: .5rem 1.2rem
+        border-radius: 5px
+        color: var(--text)
+        font-size: get-font-size('body', 'md') !important
+
+        &:nth-child(2)
+            color: $clr-red
+
+        &:hover
+            background: var(--bg-accent)
+
+    

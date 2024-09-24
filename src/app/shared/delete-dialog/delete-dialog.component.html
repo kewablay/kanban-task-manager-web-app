@@ -1,0 +1,12 @@
+<div class="delete-dialog">
+  <h2>Delete this task?</h2>
+  <p class="text-secondary">
+    Are you sure you want to delete the "{{ data.title || data.name }}" task and its
+    subtasks? This action cannot be reversed.
+  </p>
+
+  <div class="actions">
+    <button class="btn-warning" (click)="onDeleteConfirm(data.id)">Delete</button>
+    <button class="btn-secondary" (click)="onCancel()">Cancel</button>
+  </div>
+</div>

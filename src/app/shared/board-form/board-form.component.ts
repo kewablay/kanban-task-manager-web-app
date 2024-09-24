@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -12,7 +12,8 @@ import {
   updateBoard,
 } from '../../state/boards/actions/board.actions';
 import { selectNextBoardId } from '../../state/boards/selectors/boards.selectors';
-import { Board } from '../../models/app.model';
+import { Board, Column } from '../../models/app.model';
+import { Dialog, DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-board-form',
@@ -22,9 +23,13 @@ import { Board } from '../../models/app.model';
   styleUrl: './board-form.component.sass',
 })
 export class BoardFormComponent {
+  board = inject(DIALOG_DATA);
   boardForm: FormGroup;
   nextBoardId!: number;
-  @Input() board!: Board;
+  private boardFormRef = inject(DialogRef<BoardFormComponent>);
+
+  // @Input() board!: Board;
+
   constructor(private fb: FormBuilder, private store: Store) {
     this.boardForm = this.fb.group({
       name: ['', Validators.required],
@@ -37,14 +42,14 @@ export class BoardFormComponent {
 
   initializeColumns() {
     const columns = this.board?.columns || [];
-    const columnFormControls = columns.map((column) =>
+    const columnFormControls = columns.map((column: Column) =>
       this.fb.control(column.name, Validators.required)
     );
     return columnFormControls;
   }
 
-  ngOnChanges(simpleChanges: any) {
-    if (simpleChanges.board) {
+  ngOnInit() {
+    if (this.board) {
       this.boardForm = this.fb.group({
         name: [this.board?.name || '', Validators.required],
         columns: this.fb.array(this.initializeColumns()),
@@ -100,7 +105,6 @@ export class BoardFormComponent {
           return { name: columnName, tasks: existingTasks };
         }
       );
-
       const newBoard: Board = {
         id: this.board ? this.board.id : this.nextBoardId, // Use existing ID for update
         name: this.boardForm.value.name,
@@ -109,11 +113,15 @@ export class BoardFormComponent {
 
       if (this.board) {
         // Update existing board
+        console.log('Modal: About to update board after ...');
         this.store.dispatch(updateBoard({ board: newBoard }));
       } else {
         // Create a new board
+        console.log('Modal: About to create board after ...');
         this.store.dispatch(addBoard({ board: newBoard }));
       }
+
+      this.boardFormRef.close();
     }
   }
 }
