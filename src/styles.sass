@@ -17,6 +17,7 @@ body
     color: var(--text)
     transition: all .2s ease-in-out
 
+
 h1
   font-size: get-font-size('header', 'lg')
   font-weight: bold
@@ -79,3 +80,20 @@ button
     appearance: none
     border: none 
     background: none
+
+
+.custom-scroll
+  ::-webkit-scrollbar
+        height: 8px    // Set the height of the scrollbar
+        background-color: var(--background) // Background of the scrollbar track
+
+  ::-webkit-scrollbar-thumb
+      background-color: var(--bg-accent)    // Color of the scrollbar handle
+      border-radius: 4px
+
+  ::-webkit-scrollbar-thumb:hover
+      background-color: var(--secondary)  // Color when hovered
+
+  // Fallback for other browsers (Firefox)
+  scrollbar-width: thin
+  scrollbar-color: var(--bg-accent) var(--background)

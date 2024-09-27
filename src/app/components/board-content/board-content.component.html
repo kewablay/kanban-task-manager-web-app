@@ -1,10 +1,18 @@
-<main class="column-list">
+<main class="column-list custom-scroll" cdkDropListGroup>
   @for(column of board.columns; track column) {
-  <section class="column">
-    <h2 class="column-title">{{ column.name }} ({{ column.tasks.length}})</h2>
+  <section
+    class="column"
+    cdkDropList
+    [cdkDropListData]="column.tasks"
+    (cdkDropListDropped)="drop($event)"
+  >
+    <h2 class="column-title">{{ column.name }} ({{ column.tasks.length }})</h2>
     @for(task of column.tasks; track task) {
-    <app-task [task]="task" />
+    <app-task [task]="task" cdkDrag />
     }
   </section>
   }
+  <button class="add-column column btn-ghost" (click)="openEditBoardModal()">
+    <h3>+ Add New Column</h3>
+  </button>
 </main>

@@ -59,3 +59,25 @@ export const updateSubTask = createAction(
   '[Subtask] Update subtask',
   props<{ boardId: number; columnName: string; task: Task }>()
 );
+
+
+export const reorderTasks = createAction(
+  '[Board] Reorder Tasks',
+  props<{
+    boardId: number;
+    columnName: string;
+    previousIndex: number;
+    currentIndex: number;
+  }>()
+);
+
+export const moveTask = createAction(
+  '[Board] Move Task',
+  props<{
+    boardId: number;
+    sourceColumnName: string;
+    destinationColumnName: string;
+    previousIndex: number;
+    currentIndex: number;
+  }>()
+);
