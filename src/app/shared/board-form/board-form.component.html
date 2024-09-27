@@ -34,7 +34,7 @@
     <button class="btn-secondary" type="button" (click)="addColumn()">+ Add another column</button>
   </div>
 
-  <button type="submit" class="btn-primary">
+  <button [disabled]="!boardForm.valid" type="submit" class="btn-primary">
     {{ board ? "Save Changes" : "Create New Board" }}
   </button>
-</form>
+</form>tas

@@ -69,7 +69,7 @@
     }
   </select>
 
-  <button type="submit" class="btn-primary">
+  <button [disabled]="!taskForm.valid" type="submit" class="btn-primary">
     {{ task ? "Save Changes" : "Create Task" }}
   </button>
 </form>
